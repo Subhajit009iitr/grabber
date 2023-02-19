@@ -1,5 +1,9 @@
 README
 ------------------------------------------------------------------------------------------
+CONTRIBUTION BY SUBHAJIT BISWAS
+
+Updated support for python3 which was originally only supported in python
+------------------------------------------------------------------------------------------
 INTRODUCTION
 ------------------------------------------------------------------------------------------
 Grabber is a black box web application vulnerability scanner that looks for SQL Injection,
@@ -46,7 +50,7 @@ Grabber generates a live and interactive HTML report that displays the current s
 all the scanned URLs and vulnerabilities detected in an intuitive manner.
 
 ------------------------------------------------------------------------------------------------
-ENHANCEMENTS / IMPROVEMENTS TO ORIGINAL TOOL
+ENHANCEMENTS / IMPROVEMENTS TO ORIGINAL TOOL (BY LAST TEAM)
 ------------------------------------------------------------------------------------------------
 We have made following improvememnts in the original tool:
 
@@ -94,9 +98,3 @@ Original Author:
   author:  Romain Gaucher
   website: http://rgaucher.info/beta/grabber
   email:   r@rgaucher.info
-
-My Team:
-Avaneesh Desai (avaneeshdesai@gmail.com)
-Amol Deshpande
-Ankit Doshi
-Pooja Shastry
