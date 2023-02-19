@@ -143,7 +143,7 @@ class LogHandler:
 		try:
 			self.stream = open(fileName, 'w')
 		except IOError:
-			print "Error during the construction of the log system"
+			print ("Error during the construction of the log system")
 			return
 		self.stream.write("# Log from Grabber.py\n")
 	def __le__(self, string):
@@ -208,11 +208,11 @@ def getContent_GET(url,param,injection, txheaders):
 		context = ssl._create_unverified_context()
 		req = Request(newUrl, None, txheaders) # create a request object
 		ret = urlopen(req ,context=context)                     # and open it to return a handle on the url
-	except HTTPError, e:
+	except (HTTPError, e):
 		log <= ( 'The server couldn\'t fulfill the request.')
 		log <= ( 'Error code: %s' % e.code)
 		return None
-	except URLError, e:
+	except (URLError, e):
 		log <= ( 'We failed to reach a server.')
 		log <= ( 'Reason: %s' % e.reason)
 		return None
@@ -239,11 +239,11 @@ def getContentDirectURL_GET(url, string, txheaders):
 		context = ssl._create_unverified_context()
 		req = Request(url, None, txheaders) # create a request object
 		ret = urlopen(req, context=context)                     # and open it to return a handle on the url
-	except HTTPError, e:
+	except (HTTPError, e):
 		log <= ( 'The server couldn\'t fulfill the request.')
 		log <= ( 'Error code: %s' % e.code)
 		return None
-	except URLError, e:
+	except (URLError, e):
 		log <= ( 'We failed to reach a server.')
 		log <= ( 'Reason: %s' % e.reason)
 		return None
@@ -268,13 +268,13 @@ def getContent_POST(url,param,injection, txheaders):
 		context = ssl._create_unverified_context()
 		req = Request(url, txdata, txheaders)  # create a request object
 		ret = urlopen(req, context=context)                     # and open it to return a handle on the url
-	except HTTPError, e:
-		print e
+	except (HTTPError, e):
+		print (e)
 		log <= ( 'The server couldn\'t fulfill the request.')
 		log <= ( 'Error code: %s' % e.code)
 		return None
-	except URLError, e:
-		print e
+	except (URLError, e):
+		print (e)
 		log <= ( 'We failed to reach a server.')
 		log <= ( 'Reason: %s' % e.reason)
 		return None
@@ -299,11 +299,11 @@ def getContentDirectURL_POST(url, allParams, txheaders):
 		req = Request(url, txdata, txheaders)  # create a request object
 		context = ssl._create_unverified_context()
 		ret = urlopen(req, context=context)                     # and open it to return a handle on the url
-	except HTTPError, e:
+	except (HTTPError, e):
 		log <= ( 'The server couldn\'t fulfill the request.')
 		log <= ( 'Error code: %s' % e.code)
 		return None
-	except URLError, e:
+	except (URLError, e):
 		log <= ( 'We failed to reach a server.')
 		log <= ( 'Reason: %s' % e.reason)
 		return None
@@ -428,7 +428,7 @@ def investigate(url, txheaders, what = "xss"):
 
 	# look at teh cookies returned
 	for index, cookie in enumerate(cj):
-		print '[Cookie]\t', index, '\t:\t', cookie
+		print ('[Cookie]\t', index, '\t:\t', cookie)
 	cj.save(COOKIEFILE)
 
 # put a link
@@ -437,7 +437,7 @@ def active_link(s):
 	if pos < 1:
 		return s
 	else:
-		print pos, len(s), s[pos:len(s)]
+		print (pos, len(s), s[pos:len(s)])
 		url = s[pos:len(s)]
 		newStr = s[0:pos-1] + "<a href='" +url + "'>" + urllib.unquote(url) + "</a>"
 		return newStr
@@ -446,19 +446,19 @@ def active_link(s):
 def createStructure():
 	try:
 		os.mkdir("results")
-	except OSError,e :
+	except (OSError,e) :
 		a=0
 	try:
 		os.mkdir("local")
-	except OSError,e :
+	except (OSError,e) :
 		a=0
 	try:
 		os.mkdir("local/js")
-	except OSError,e :
+	except (OSError,e) :
 		a=0
 	try:
 		os.mkdir("local/css")
-	except OSError,e :
+	except (OSError,e) :
 		a=0
 
 if __name__ == '__main__':
@@ -508,8 +508,8 @@ if __name__ == '__main__':
 		try:
 			f = open("grabber.conf.xml", 'r')
 		except IOError:
-			print "No arguments ? You need to setup the XML configuration file or using the inline arguments"
-			print "Look at the doc to start..."
+			print ("No arguments ? You need to setup the XML configuration file or using the inline arguments")
+			print ("Look at the doc to start...")
 			sys.exit(1)
 		parser = make_parser()
 		conf_handler = ConfHandler()
@@ -551,15 +551,15 @@ if __name__ == '__main__':
 	try:
 		try:
 			spider(archives_url, txheaders, depth)
-		except IOError,e :
-			print "Cannot open the url = %s" % archives_url
-			print e.strerror
+		except (IOError,e) :
+			print ("Cannot open the url = %s" % archives_url)
+			print (e.strerror)
 			sys.exit(1)
 		if len(database.keys()) < 1:
-			print "No information found!"
+			print ("No information found!")
 			sys.exit(1)
 		else:
-			print "Start investigation..."
+			print ("Start investigation...")
 
 		if option_sql:
 			investigate(archives_url, txheaders, "sql")
@@ -579,21 +579,8 @@ if __name__ == '__main__':
 			investigate(archives_url, txheaders, "session")
 	except KeyboardInterrupt:
 		stopped = 1
-		print "Plouf!"
+		print ("Plouf!")
 	if stopped == 0:
 		appendToReport("Completed", "", True)
 	else:
 		appendToReport("Stopped", "", True)
-
-
-
-
-
-
-
-
-
-
-
-
-
