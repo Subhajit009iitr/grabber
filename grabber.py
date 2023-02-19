@@ -448,19 +448,19 @@ def active_link(s):
 def createStructure():
 	try:
 		os.mkdir("results")
-	except (OSError,e) :
+	except OSError as e:
 		a=0
 	try:
 		os.mkdir("local")
-	except (OSError,e) :
+	except OSError as e:
 		a=0
 	try:
 		os.mkdir("local/js")
-	except (OSError,e) :
+	except OSError as e:
 		a=0
 	try:
 		os.mkdir("local/css")
-	except (OSError,e) :
+	except OSError as e:
 		a=0
 
 if __name__ == '__main__':
@@ -540,7 +540,11 @@ if __name__ == '__main__':
 
 	generateReport(archives_url, False);
 	filename = "file:///Applications/XAMPP/xamppfiles/htdocs/grabber/results/report.html"
-	webbrowser.get('macosx').open(filename, 0, False)
+	urL='https://www.google.com'
+	chrome_path="C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+	webbrowser.register('chrome', None,webbrowser.BackgroundBrowser(chrome_path))
+	webbrowser.get('chrome').open_new_tab(urL)
+	webbrowser.get('chrome').open(filename, 0, False)
 
 	definition_headers(option_cookie)
 	if option_cookie != None:
@@ -553,7 +557,7 @@ if __name__ == '__main__':
 	try:
 		try:
 			spider(archives_url, txheaders, depth)
-		except (IOError,e) :
+		except IOError as e :
 			print ("Cannot open the url = %s" % archives_url)
 			print (e.strerror)
 			sys.exit(1)

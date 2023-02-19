@@ -119,10 +119,11 @@ def getContentDirectURL_GET(url, string):
 		context = ssl._create_unverified_context()
 		req = Request(url, None, txheaders) # create a request object
 		ret = urlopen(req, context=context, timeout=5)                     # and open it to return a handle on the url
-	except (HTTPError, e):
+	# except (HTTPError, e):
+	except HTTPError as e:
 		print (e)
 		return
-	except (URLError, e):
+	except URLError as e:
 		print (e)
 		return
 	except IOError:
