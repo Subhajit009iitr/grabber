@@ -2,8 +2,8 @@ output = "<p></p>"
 optionsMessage = ""
 def setOptions(options):
 	global optionsMessage
-	print options
-	optionsMessage = "<br/><div> Looking for: ";
+	print(options)
+	optionsMessage = "<br/><div> Looking for: "
 	if options.sql != False:
 		optionsMessage += "<span class='label label-warning'>SQL Injection</span>"
 	if options.xss != False:
@@ -94,7 +94,7 @@ def generateReport(url, isFinal=False):
 		f.close()
 
 	except IOError:
-		print "Failed to create report file"
+		print ("Failed to create report file")
 		sys.exit(1)
 
 def appendToReport(url, message, isFinal=False):

@@ -4,10 +4,10 @@
 	Copyright (C) 2006 - Romain Gaucher - http://rgaucher.info
 """
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from xml.sax import *   # Need PyXML [http://pyxml.sourceforge.net/]
 from optparse import OptionParser
-from urllib2 import URLError, HTTPError
+from urllib.error import URLError, HTTPError
 import urllib
 import time
 import re,sys,os
@@ -29,8 +29,10 @@ txheaders = {}
 refererUrl = "https://129.219.253.30"
 #txheaders = {'User-agent' : 'Grabber/0.1 (X11; U; Linux i686; en-US; rv:1.7)', 'Referer' : refererUrl, 'Cookie': cookie}
 
-import cookielib
-import urllib2
+# import cookielib
+import http.cookiejar as cookielib
+# import urllib2
+import urllib.request as urllib2
 
 urlopen = urllib2.urlopen
 Request = urllib2.Request

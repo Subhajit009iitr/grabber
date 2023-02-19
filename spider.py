@@ -7,9 +7,9 @@ import urllib
 import time
 import re,sys,os,string
 import ssl
-from BeautifulSoup import BeautifulSoup,SoupStrainer
-from urllib2 import URLError, HTTPError
-from urlparse import urljoin
+from bs4 import BeautifulSoup,SoupStrainer
+from urllib.error import URLError, HTTPError
+from urllib.parse import urljoin
 import os.path
 from report import appendToReport
 
@@ -18,8 +18,9 @@ cj = None
 ClientCookie = None
 cookielib = None
 
-import cookielib
-import urllib2
+# import cookielib
+import http.cookiejar as cookielib
+import urllib.request as urllib2
 
 urlopen = urllib2.urlopen
 cj = cookielib.LWPCookieJar()       # This is a subclass of FileCookieJar that has useful load and save methods
@@ -55,7 +56,7 @@ outSpiderFile = None
 _urlEncode = {}
 for i in range(256):
 	_urlEncode[chr(i)] = '%%%02x' % i
-for c in string.letters + string.digits + '_,.-/':
+for c in string.ascii_letters + string.digits + '_,.-/':
 	_urlEncode[c] = c
 _urlEncode[' '] = '+'
 
@@ -84,10 +85,8 @@ def urlDecode(s):
 
 
 def htmlencode(s):
-	"""
-		Escaping the HTML special characters
-	"""
- 	s = s.replace("&", "&amp;")
+	# Escaping the HTML special characters
+	s = s.replace("&", "&amp;")
 	s = s.replace("<", "&lt;")
 	s = s.replace(">", "&gt;")
 	s = s.replace("\"","&quot;")
@@ -97,9 +96,7 @@ def htmlencode(s):
 
 
 def htmldecode(s):
-	"""
-		Unescaping the HTML special characters
-	"""
+	#Unescaping the HTML special characters
 	s = s.replace("&lt;", "<")
 	s = s.replace("&gt;", ">")
 	s = s.replace("&quot;", "\"")
@@ -122,11 +119,11 @@ def getContentDirectURL_GET(url, string):
 		context = ssl._create_unverified_context()
 		req = Request(url, None, txheaders) # create a request object
 		ret = urlopen(req, context=context, timeout=5)                     # and open it to return a handle on the url
-	except HTTPError, e:
-		print e
+	except (HTTPError, e):
+		print (e)
 		return
-	except URLError, e:
-		print e
+	except (URLError, e):
+		print (e)
 		return
 	except IOError:
 		return
@@ -148,13 +145,13 @@ def scan(currentURL):
 	try:
 		htmlContent= archives_hDl.read()
 		#print archives_hDl.info()
-	except IOError, e:
-		print "Cannot open the file,",(e.strerror)
+	except (IOError, e):
+		print ("Cannot open the file,",(e.strerror))
 		return
 	except AttributeError:
 		print ("Grabber cannot retrieve the given url: %s" % currentURL)
 		return
- 	print currentURL
+	print(currentURL)
 	parseHtmlLinks(currentURL,htmlContent)
 	parseHtmlParams(currentURL,htmlContent)
 
@@ -523,7 +520,7 @@ def parseHtmlParams(currentURL, htmlContent):
 def runSpiderScan(entryUrl, depth = 0):
 	global outSpiderFile
 	prev = ""
-	print "runSpiderScan @ ", entryUrl, " |   #",depth
+	print ("runSpiderScan @ ", entryUrl, " |   #",depth)
 	if entryUrl not in scanned_urls:
 		if outSpiderFile:
 			outSpiderFile.write("\t\t<entryURL>%s</entryURL>\n" % entryUrl)
@@ -547,7 +544,7 @@ def runSpiderScan(entryUrl, depth = 0):
 
 
 def spider(entryUrl, headers, depth = 0):
-	print entryUrl
+	print (entryUrl)
 	global root,outSpiderFile
 	global txheaders
 	txheaders = headers
@@ -571,7 +568,7 @@ def spider(entryUrl, headers, depth = 0):
 	except IOError:
 		alreadyScanned = False
 
-	print "Start scanning...", root
+	print ("Start scanning...", root)
 	appendToReport("Indexing - " + entryUrl, "", False)
 	if depth == 0:
 		scan(root)
@@ -588,7 +585,7 @@ def spider(entryUrl, headers, depth = 0):
 			outSpiderFile.write("\n</spider>")
 			outSpiderFile.close()
 		else:
-			print "Loading the previous spider results from 'local/spiderSite.xml'"
+			print ("Loading the previous spider results from 'local/spiderSite.xml'")
 			# load the XML file
 			regUrl = re.compile(r'(.*)<entryURL>(.*)</entryURL>(.*)',re.I)
 			regDmb = re.compile(r'(.*)<dumb>(.*)</dumb>(.*)',re.I)
@@ -615,9 +612,9 @@ def spider(entryUrl, headers, depth = 0):
 					continue
 				try:
 					htmlContent= archives_hDl.read()
-				except IOError, e:
+				except (IOError, e):
 					continue
-				except AttributeError, e:
+				except (AttributeError, e):
 					continue
 				parseHtmlParams(currentURL,htmlContent)
 
@@ -641,4 +638,3 @@ def spider(entryUrl, headers, depth = 0):
 			outSpiderFile.write("\t<call severity='high'>%s</call>\n" % i)
 		outSpiderFile.write("</external>")
 		outSpiderFile.close()
-
